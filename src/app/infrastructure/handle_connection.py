@@ -15,7 +15,7 @@ def handle_connection(client_connection):
 		client_connection.sendall(response)
 
 		if CONNECTION_HEADER not in headers \
-			or headers[CONNECTION_HEADER] == CONNECTION.NONPERSISTENT_CONNECTION:
+			or headers[CONNECTION_HEADER] == CONNECTION.NON_PERSISTENT:
 			break
 
 	client_connection.close()

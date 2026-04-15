@@ -2,7 +2,7 @@ import socket
 import threading
 
 from src.app.consts.server_env import SERVER_HOST, SERVER_PORT
-from src.app.infrastructure import handle_connection
+from src.app.infrastructure.handle_connection import handle_connection
 
 def run_server():
 	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
