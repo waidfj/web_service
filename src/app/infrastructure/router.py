@@ -1,10 +1,12 @@
 from src.app.application import generate_not_modified
 from src.app.application.generate_not_found import generate_not_found
 from src.app.application.generate_bad_request import generate_bad_request
+from src.app.application.generate_ok import generate_ok
 from src.app.consts.file_types import FILE_TYPES
 from src.app.consts.header_names import CONNECTION, CONNECTION_HEADER, \
     IF_MODIFIED_SINCE_HEADER, SEC_FETCH_DEST_HEADER
 from src.app.consts.server_env import FILES_PATH
+from src.app.infrastructure.generate_content import generate_content
 from src.app.infrastructure.get_last_modified import get_last_modified
 
 
@@ -23,7 +25,7 @@ def route(request_line, headers):
     file_type = headers[SEC_FETCH_DEST_HEADER]
     if file_type not in FILE_TYPES.values():
         return generate_bad_request(connection)
-    
+
     # extract the file name
     filename = request_line[1]
     if filename == '/':
@@ -40,27 +42,6 @@ def route(request_line, headers):
             return generate_not_modified(connection, last_modified)
 
 
-    if headers[SEC_FETCH_DEST_HEADER] == FILE_TYPES.DOCUMENT:
-        # get html file
-        pass
-    elif headers[SEC_FETCH_DEST_HEADER] == FILE_TYPES.IMAGE:
-        # get image file
-        pass
+    body, content_type = generate_content(filename, filepath, headers[SEC_FETCH_DEST_HEADER])
 
-    # if type is document
-        # get last-modified for the file
-        # handle 'if-modified' header
-        # return the file
-        # if the file not found, return 404 not found
-
-
-    # if type is image
-        # get last-modified for the file
-        # handle 'if-modified' header
-        # return the file
-        # if the file not found, return 404 not found
-
-
-    # if another type
-        # return bad request
-    pass
+    return generate_ok(body, connection, last_modified, content_type)

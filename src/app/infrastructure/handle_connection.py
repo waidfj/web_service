@@ -13,6 +13,8 @@ def handle_connection(client_connection):
 
 		response = route(lines[0].split(), headers)
 		client_connection.sendall(response)
+		print(request)
+		print(response.decode())
 
 		if CONNECTION_HEADER not in headers \
 			or headers[CONNECTION_HEADER] == CONNECTION.NON_PERSISTENT:

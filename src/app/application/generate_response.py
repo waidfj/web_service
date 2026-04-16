@@ -20,4 +20,4 @@ def generate_response(response_line, body, connection, last_modified, content_ty
         last_modified +
         CONNECTION_HEADER + f': {connection}' + HEADER_SEPARATOR +
         HEADER_SEPARATOR
-    ).encode('ascii') + body.encode('utf-8')
+    ).encode('ascii') + body
