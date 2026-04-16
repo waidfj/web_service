@@ -3,3 +3,4 @@ SERVER_PORT = 8000
 
 FILES_PATH = 'src/docs'
 HOME = '/index.html'
+PRIVATE_FOLDER = 'private'
