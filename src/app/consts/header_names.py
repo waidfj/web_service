@@ -8,6 +8,7 @@ CONNECTION = MapDict({
     'NON_PERSISTENT': 'close', 'PERSISTENT': 'keep-alive'
 })
 
+IF_MODIFIED_SINCE_HEADER = 'If-Modified-Since'
 LAST_MODIFIED_HEADER = 'Last-Modified'
 CONTENT_TYPE_HEADER = 'Content-Type'
 CONTENT_LENGTH_HEADER = 'Content-Length'
