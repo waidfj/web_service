@@ -1,4 +1,4 @@
-from src.app.application import generate_not_modified
+from src.app.application.generate_not_modified import generate_not_modified
 from src.app.application.generate_not_found import generate_not_found
 from src.app.application.generate_bad_request import generate_bad_request
 from src.app.application.generate_ok import generate_ok
@@ -37,8 +37,8 @@ def route(request_line, headers):
     except FileNotFoundError:
         return generate_not_found(connection)
     
-    if IF_MODIFIED_SINCE_HEADER in headers:
-        if last_modified == headers[IF_MODIFIED_SINCE_HEADER].strip():
+    if IF_MODIFIED_SINCE_HEADER in headers \
+        and last_modified == headers[IF_MODIFIED_SINCE_HEADER].strip():
             return generate_not_modified(connection, last_modified)
 
 
