@@ -8,11 +8,16 @@ def generate_response(response_line, body, connection, last_modified, content_ty
     else:
         last_modified = ''
 
+    if content_type:
+        content_type = CONTENT_TYPE_HEADER + f': {content_type}' + HEADER_SEPARATOR
+    else:
+        content_type = ''
+
     return (
         response_line +
         CONTENT_LENGTH_HEADER + f': {len(body)}' + HEADER_SEPARATOR +
-        CONTENT_TYPE_HEADER + f': {content_type}' + HEADER_SEPARATOR +
+        content_type +
         last_modified +
         CONNECTION_HEADER + f': {connection}' + HEADER_SEPARATOR +
         HEADER_SEPARATOR
-    ).encode('ascii') + f'{body}'.encode('utf-8')
+    ).encode('ascii') + body.encode('utf-8')
