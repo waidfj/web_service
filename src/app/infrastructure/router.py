@@ -5,21 +5,17 @@ from src.app.application.generate_ok import generate_ok
 from src.app.consts.file_types import FILE_TYPES
 from src.app.consts.header_names import CONNECTION, CONNECTION_HEADER, \
     IF_MODIFIED_SINCE_HEADER, SEC_FETCH_DEST_HEADER
-from src.app.consts.server_env import FILES_PATH
+from src.app.consts.server_env import FILES_PATH, HOME
 from src.app.infrastructure.generate_content import generate_content
 from src.app.infrastructure.get_last_modified import get_last_modified
 
 
 def route(request_line, headers):
-    if CONNECTION_HEADER in headers:
-        connection = headers[CONNECTION_HEADER]
-    else:
-        connection = CONNECTION.NON_PERSISTENT
+    connection = headers[CONNECTION_HEADER] if CONNECTION_HEADER in headers \
+        else CONNECTION.NON_PERSISTENT
 
 	# validate if bad request
     if request_line[0] != 'GET' or SEC_FETCH_DEST_HEADER not in headers:
-        if CONNECTION_HEADER in headers:
-            return generate_bad_request(connection)
         return generate_bad_request(connection)
 
     file_type = headers[SEC_FETCH_DEST_HEADER]
@@ -27,9 +23,7 @@ def route(request_line, headers):
         return generate_bad_request(connection)
 
     # extract the file name
-    filename = request_line[1]
-    if filename == '/':
-        filename = '/index.html'
+    filename = HOME if request_line[1] == '/' else request_line[1]
     filepath = FILES_PATH + filename
 
     try :
@@ -42,6 +36,6 @@ def route(request_line, headers):
             return generate_not_modified(connection, last_modified)
 
 
-    body, content_type = generate_content(filename, filepath, headers[SEC_FETCH_DEST_HEADER])
+    body, content_type = generate_content(filename, filepath, file_type)
 
     return generate_ok(body, connection, last_modified, content_type)
