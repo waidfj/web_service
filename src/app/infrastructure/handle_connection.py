@@ -2,18 +2,22 @@ from src.app.consts.header_names import CONNECTION_HEADER, CONNECTION, HEADER_SE
 from src.app.infrastructure.router import route
 
 
+# Handles requests of a single client connection
 def handle_connection(client_connection):
 	while True:
+		# Read request
 		request = client_connection.recv(1024).decode()
 		if not request:
 			break
 
+		# Generate & send response
 		lines = request.split(HEADER_SEPARATOR+HEADER_SEPARATOR, 1)[0].split(HEADER_SEPARATOR)
 		headers = extractHeadersDictionary(lines)
 
 		response = route(lines[0].split(), headers)
 		client_connection.sendall(response)
 
+		# If connection is non-persistent close the connection
 		if CONNECTION_HEADER not in headers \
 			or headers[CONNECTION_HEADER] == CONNECTION.NON_PERSISTENT:
 			break
@@ -21,6 +25,7 @@ def handle_connection(client_connection):
 	client_connection.close()
 
 
+# Extracts the headers of the request to be accessed as a dictionary data-structure
 def extractHeadersDictionary(lines):
 	headers = {}
 

@@ -1,8 +1,8 @@
 from email.utils import formatdate
 import os
-from src.app.consts.server_env import FILES_PATH
 
 
+# Calculates last_modified for an existing file, if file doesn't exist it throws FileNotFound exception
 def get_last_modified(filepath):
     mtime = os.path.getmtime(filepath)
     

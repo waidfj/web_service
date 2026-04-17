@@ -11,7 +11,9 @@ from src.app.infrastructure.generate_content import generate_content
 from src.app.infrastructure.get_last_modified import get_last_modified
 
 
+# Handles the request
 def route(request_line, headers):
+    # Determin connection type (persistent/non-persistent)
     connection = headers[CONNECTION_HEADER] if CONNECTION_HEADER in headers \
         else CONNECTION.NON_PERSISTENT
 
@@ -23,23 +25,26 @@ def route(request_line, headers):
     if file_type not in FILE_TYPES.values():
         return generate_bad_request(connection)
 
-    # extract the file name
+    # extract the file name & path
     filename = HOME if request_line[1] == '/' else request_line[1]
     filepath = FILES_PATH + filename
 
-    if PRIVATE_FOLDER in filepath.split('/'):
-        return generate_forbidden(connection)
-
+    # Verify if file exists & calculate last_modified
     try :
         last_modified = get_last_modified(filepath)
     except FileNotFoundError:
         return generate_not_found(connection)
-    
+
+    # Verify if file is forbidden
+    if PRIVATE_FOLDER in filepath.split('/'):
+        return generate_forbidden(connection)
+
+    # Check if file is modified
     if IF_MODIFIED_SINCE_HEADER in headers \
         and last_modified == headers[IF_MODIFIED_SINCE_HEADER].strip():
             return generate_not_modified(connection, last_modified)
 
-
+    # Generate the response body
     body, content_type = generate_content(filename, filepath, file_type)
 
     return generate_ok(body, connection, last_modified, content_type)

@@ -2,7 +2,9 @@ from src.app.consts.header_names import CONNECTION_HEADER, CONTENT_LENGTH_HEADER
     CONTENT_TYPE_HEADER, HEADER_SEPARATOR, LAST_MODIFIED_HEADER
 
 
+# Formats the response to match HTTP format
 def generate_response(response_line, body, connection, last_modified, content_type):
+    # Last-Modified and Content-Type are optional (they don't exist in no content responses)
     if last_modified:
         last_modified = LAST_MODIFIED_HEADER + f': {last_modified}' + HEADER_SEPARATOR
     else:
