@@ -2,6 +2,7 @@ from src.app.consts.header_names import HEADER_SEPARATOR
 from src.app.services.dict import MapDict
 
 
+# Maps HTTP Status to the correct response line
 RESPONSE_LINE = MapDict({
     'OK': f'HTTP/1.1 200 OK{HEADER_SEPARATOR}',
     'NOT_FOUND': f'HTTP/1.1 404 Not Found{HEADER_SEPARATOR}',

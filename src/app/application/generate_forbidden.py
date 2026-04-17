@@ -2,6 +2,7 @@ from src.app.application.generate_response import generate_response
 from src.app.consts.http_response import RESPONSE_LINE
 
 
+# Returns a 403 Forbidden response formatted
 def generate_forbidden(connection):
     body = '<h1>\
         Forbidden, you do not have permission to access this resource\

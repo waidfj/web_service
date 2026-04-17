@@ -2,6 +2,7 @@ from src.app.application.generate_response import generate_response
 from src.app.consts.http_response import RESPONSE_LINE
 
 
+# Returns a 400 Bad Request response formatted
 def generate_bad_request(connection):
     body = '<h1>\
         Bad Request, major headers are missing or request type is not supported\
