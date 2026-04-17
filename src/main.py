@@ -1,8 +1,9 @@
 import socket
 import threading
 
-from src.app.consts.server_env import SERVER_HOST, SERVER_PORT
+from src.app.consts.server_env import LOG_FILE, SERVER_HOST, SERVER_PORT
 from src.app.infrastructure.handle_connection import handle_connection
+from src.app.services.logger import clear_log
 
 
 # Start connections and dedicate a thread for each
@@ -13,9 +14,11 @@ def run_server():
 	server_socket.bind((SERVER_HOST, SERVER_PORT))
 	server_socket.listen(1)
 
+	clear_log(LOG_FILE)
+
 	# Accept connections and create threads to handle them
 	while True:
-		client_connection, client_address = server_socket.accept()
+		client_connection, _ = server_socket.accept()
 
 		client_thread = threading.Thread(target=handle_connection, args=(client_connection,))
 		client_thread.start()

@@ -20,3 +20,7 @@ To run the server, execute the following:
 cd web-server
 python3 server.py
 ```
+
+## Server Log
+
+In order to view server log, navigate to the folder where your project is. You shall see a folder named `report`, if you open it you will find a file named logs.txt where the server logs are stored.
