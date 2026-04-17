@@ -27,8 +27,7 @@ def handle_connection(client_connection):
 		log(LOG_FILE, "--------------------")
 
 		# If connection is non-persistent close the connection
-		if CONNECTION_HEADER not in headers \
-			or headers[CONNECTION_HEADER] == CONNECTION.NON_PERSISTENT:
+		if CONNECTION_HEADER in headers and headers[CONNECTION_HEADER] == CONNECTION.NON_PERSISTENT:
 			break
 
 	client_connection.close()

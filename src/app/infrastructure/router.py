@@ -15,7 +15,7 @@ from src.app.infrastructure.get_last_modified import get_last_modified
 def route(request_line, headers):
     # Determin connection type (persistent/non-persistent)
     connection = headers[CONNECTION_HEADER] if CONNECTION_HEADER in headers \
-        else CONNECTION.NON_PERSISTENT
+        else CONNECTION.PERSISTENT
 
 	# validate if bad request
     if request_line[0] != 'GET' or SEC_FETCH_DEST_HEADER not in headers:
