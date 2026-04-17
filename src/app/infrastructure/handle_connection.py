@@ -1,3 +1,5 @@
+from src.app.consts.server_env import LOG_FILE
+from src.app.services.logger import log
 from src.app.consts.header_names import CONNECTION_HEADER, CONNECTION, HEADER_SEPARATOR
 from src.app.infrastructure.router import route
 
@@ -10,12 +12,19 @@ def handle_connection(client_connection):
 		if not request:
 			break
 
+		# Log request
+		log(LOG_FILE, request)
+
 		# Generate & send response
 		lines = request.split(HEADER_SEPARATOR+HEADER_SEPARATOR, 1)[0].split(HEADER_SEPARATOR)
 		headers = extractHeadersDictionary(lines)
 
 		response = route(lines[0].split(), headers)
 		client_connection.sendall(response)
+
+		# Log response
+		log(LOG_FILE, response)
+		log(LOG_FILE, "--------------------")
 
 		# If connection is non-persistent close the connection
 		if CONNECTION_HEADER not in headers \
